@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Black Hole</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at center, #0a0a12 0%, #000000 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        /* Stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(102, 126, 234, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Black hole container */
+        .black-hole-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        /* Accretion disk */
+        .accretion-disk {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #ff6b35,
+                #f7931e,
+                #ffcc00,
+                #ff6b35,
+                #c41e3a,
+                #8b0000,
+                #ff6b35
+            );
+            animation: rotate 8s linear infinite;
+            filter: blur(3px);
+            opacity: 0.8;
+        }
+
+        .accretion-disk::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.9) 100%);
+            border-radius: 50%;
+        }
+
+        /* Gravitational lensing effect */
+        .lensing {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 200, 100, 0.3);
+            animation: pulse-lens 4s ease-in-out infinite;
+        }
+
+        .lensing:nth-child(2) {
+            width: 280px;
+            height: 280px;
+            animation-delay: 0.5s;
+            border-color: rgba(255, 150, 50, 0.2);
+        }
+
+        .lensing:nth-child(3) {
+            width: 240px;
+            height: 240px;
+            animation-delay: 1s;
+            border-color: rgba(255, 100, 50, 0.15);
+        }
+
+        @keyframes pulse-lens {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        /* Event horizon (the black center) */
+        .event-horizon {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #000000 0%, #000000 70%, transparent 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 60px 30px rgba(0, 0, 0, 0.9),
+                0 0 100px 60px rgba(0, 0, 0, 0.7),
+                inset 0 0 60px rgba(102, 126, 234, 0.1);
+            z-index: 10;
+        }
+
+        /* Photon sphere glow */
+        .photon-sphere {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 0 20px rgba(102, 126, 234, 0.5),
+                inset 0 0 20px rgba(102, 126, 234, 0.3);
+            animation: photon-glow 2s ease-in-out infinite;
+            z-index: 9;
+        }
+
+        @keyframes photon-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5), inset 0 0 20px rgba(102, 126, 234, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(102, 126, 234, 0.8), inset 0 0 30px rgba(102, 126, 234, 0.5); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Orbiting stars */
+        .orbiting-star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white, 0 0 20px rgba(255, 200, 100, 0.5);
+        }
+
+        /* Drop zone text */
+        .drop-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.7rem;
+            text-align: center;
+            pointer-events: none;
+            z-index: 11;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .black-hole-container:hover .drop-hint {
+            opacity: 1;
+        }
+
+        /* Thought input section */
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .thought-input {
+            padding: 12px 20px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            width: 300px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .thought-input:focus {
+            border-color: rgba(102, 126, 234, 0.8);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .thought-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-feed {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-feed:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Event horizon list (items about to be consumed) */
+        .event-horizon-list {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 100, 50, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            width: 100%;
+            max-width: 500px;
+            margin: 10px 0;
+        }
+
+        .event-horizon-list h3 {
+            color: #ff6b35;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .horizon-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 40px;
+        }
+
+        .horizon-item {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(196, 30, 58, 0.2));
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: approach 2s ease-in-out infinite;
+        }
+
+        .horizon-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+        }
+
+        @keyframes approach {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Controls section */
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .btn-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .btn-control:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-control.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        /* Breathing guide */
+        .breathing-guide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .breathing-guide.active {
+            opacity: 1;
+        }
+
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .breathing-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.8); }
+            25% { transform: scale(1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(0.8); }
+        }
+
+        /* Stats panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+        }
+
+        /* Hawking radiation (resurfaced items) */
+        .hawking-radiation {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            width: 100%;
+            max-width: 500px;
+            margin: 10px 0;
+        }
+
+        .hawking-radiation h3 {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radiation-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            animation: radiate 0.5s ease-out;
+        }
+
+        @keyframes radiate {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Absorbed item animation */
+        .absorbed-item {
+            position: fixed;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        /* Achievement notification */
+        .achievement {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 53, 0.2));
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            border-radius: 15px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 3s forwards;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .achievement-icon {
+            font-size: 1.5rem;
+        }
+
+        .achievement-text {
+            font-size: 0.9rem;
+        }
+
+        .achievement-title {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Sound toggle indicator */
+        .sound-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .black-hole-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .accretion-disk {
+                width: 260px;
+                height: 260px;
+            }
+            
+            .lensing {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .lensing:nth-child(2) {
+                width: 210px;
+                height: 210px;
+            }
+            
+            .lensing:nth-child(3) {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .event-horizon {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .photon-sphere {
+                width: 105px;
+                height: 105px;
+            }
+            
+            .thought-input {
+                width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>🕳️ Infinity Black Hole</h1>
+            <p>Feed your thoughts to the void</p>
+        </header>
+
+        <div class="black-hole-container" id="blackHole">
+            <div class="accretion-disk"></div>
+            <div class="lensing"></div>
+            <div class="lensing"></div>
+            <div class="lensing"></div>
+            <div class="photon-sphere"></div>
+            <div class="event-horizon"></div>
+            <div class="drop-hint">Drop thoughts<br>into the void</div>
+            
+            <div class="breathing-guide" id="breathingGuide">
+                <div class="breathing-circle">
+                    <span class="breathing-text" id="breathingText">Breathe In</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <input type="text" class="thought-input" id="thoughtInput" placeholder="Enter a thought, task, or worry...">
+            <button class="btn btn-feed" id="feedBtn">Feed to Void 🕳️</button>
+        </div>
+
+        <div class="controls">
+            <button class="btn-control" id="meditationBtn">🧘 Meditation Mode</button>
+            <button class="btn-control" id="soundBtn">🔇 Sound Off</button>
+            <button class="btn-control" id="radiationBtn">🔮 Hawking Radiation</button>
+        </div>
+
+        <div class="event-horizon-list">
+            <h3>⚠️ Event Horizon (click to consume)</h3>
+            <div class="horizon-items" id="horizonItems">
+                <!-- Items appear here before being consumed -->
+            </div>
+        </div>
+
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-value" id="totalAbsorbed">0</div>
+                <div class="stat-label">Absorbed into Infinity</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="todayAbsorbed">0</div>
+                <div class="stat-label">Today's Void Feed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="radiationCount">0</div>
+                <div class="stat-label">Hawking Emissions</div>
+            </div>
+        </div>
+
+        <div class="hawking-radiation" id="hawkingSection" style="display: none;">
+            <h3>🔮 Hawking Radiation (resurfaced from the void)</h3>
+            <div id="radiationContent">
+                <em style="color: rgba(255,255,255,0.4);">Click "Hawking Radiation" to retrieve something from the void...</em>
+            </div>
+        </div>
+    </div>
+
+    <div class="sound-indicator" id="soundIndicator" style="display: none;">
+        🔊 Ambient sound playing
+    </div>
+
+    <script>
+        // State
+        let state = {
+            totalAbsorbed: 0,
+            todayAbsorbed: 0,
+            radiationCount: 0,
+            absorbedItems: [],
+            horizonItems: [],
+            meditationMode: false,
+            soundOn: false,
+            achievements: {
+                first: false,
+                ten: false,
+                fifty: false,
+                hundred: false
+            }
+        };
+
+        // Load state from localStorage
+        function loadState() {
+            const saved = localStorage.getItem('infinityBlackHole');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state = { ...state, ...parsed };
+                
+                // Reset today count if new day
+                const lastDate = localStorage.getItem('infinityBlackHoleDate');
+                const today = new Date().toDateString();
+                if (lastDate !== today) {
+                    state.todayAbsorbed = 0;
+                    localStorage.setItem('infinityBlackHoleDate', today);
+                }
+                
+                updateStats();
+                renderHorizonItems();
+            }
+        }
+
+        // Save state
+        function saveState() {
+            localStorage.setItem('infinityBlackHole', JSON.stringify(state));
+            localStorage.setItem('infinityBlackHoleDate', new Date().toDateString());
+        }
+
+        // Create background stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Create orbiting stars
+        function createOrbitingStars() {
+            const container = document.getElementById('blackHole');
+            
+            for (let i = 0; i < 8; i++) {
+                const star = document.createElement('div');
+                star.className = 'orbiting-star';
+                
+                const angle = (i / 8) * Math.PI * 2;
+                const radius = 160 + Math.random() * 40;
+                const speed = 5 + Math.random() * 5;
+                
+                animateOrbitingStar(star, angle, radius, speed);
+                container.appendChild(star);
+            }
+        }
+
+        function animateOrbitingStar(star, startAngle, startRadius, speed) {
+            let angle = startAngle;
+            let radius = startRadius;
+            
+            function animate() {
+                angle += 0.02;
+                radius -= 0.05;
+                
+                if (radius < 60) {
+                    radius = 160 + Math.random() * 40;
+                    angle = Math.random() * Math.PI * 2;
+                }
+                
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius * 0.4; // Elliptical orbit
+                
+                star.style.left = `calc(50% + ${x}px)`;
+                star.style.top = `calc(50% + ${y}px)`;
+                star.style.opacity = Math.max(0.3, radius / 200);
+                star.style.transform = `scale(${radius / 200})`;
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        // Add item to event horizon
+        function addToHorizon(text) {
+            if (!text.trim()) return;
+            
+            state.horizonItems.push({
+                id: Date.now(),
+                text: text.trim(),
+                timestamp: new Date().toISOString()
+            });
+            
+            saveState();
+            renderHorizonItems();
+        }
+
+        // Render horizon items
+        function renderHorizonItems() {
+            const container = document.getElementById('horizonItems');
+            container.innerHTML = '';
+            
+            state.horizonItems.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'horizon-item';
+                el.textContent = item.text;
+                el.onclick = () => consumeItem(item.id);
+                container.appendChild(el);
+            });
+        }
+
+        // Consume item (absorb into black hole)
+        function consumeItem(id) {
+            const item = state.horizonItems.find(i => i.id === id);
+            if (!item) return;
+            
+            // Get the element position
+            const elements = document.querySelectorAll('.horizon-item');
+            let sourceEl = null;
+            elements.forEach(el => {
+                if (el.textContent === item.text) sourceEl = el;
+            });
+            
+            if (sourceEl) {
+                animateAbsorption(sourceEl, item.text);
+            }
+            
+            // Move to absorbed
+            state.absorbedItems.push(item);
+            state.horizonItems = state.horizonItems.filter(i => i.id !== id);
+            state.totalAbsorbed++;
+            state.todayAbsorbed++;
+            
+            checkAchievements();
+            saveState();
+            updateStats();
+            renderHorizonItems();
+        }
+
+        // Animate absorption
+        function animateAbsorption(sourceEl, text) {
+            const rect = sourceEl.getBoundingClientRect();
+            const blackHole = document.getElementById('blackHole');
+            const bhRect = blackHole.getBoundingClientRect();
+            const targetX = bhRect.left + bhRect.width / 2;
+            const targetY = bhRect.top + bhRect.height / 2;
+            
+            const absorbed = document.createElement('div');
+            absorbed.className = 'absorbed-item';
+            absorbed.textContent = text;
+            absorbed.style.left = rect.left + 'px';
+            absorbed.style.top = rect.top + 'px';
+            document.body.appendChild(absorbed);
+            
+            // Spiral animation
+            let angle = 0;
+            let progress = 0;
+            const startX = rect.left;
+            const startY = rect.top;
+            
+            function spiral() {
+                progress += 0.02;
+                angle += 0.3;
+                
+                if (progress >= 1) {
+                    absorbed.remove();
+                    return;
+                }
+                
+                const radius = (1 - progress) * 100;
+                const x = startX + (targetX - startX) * progress + Math.cos(angle) * radius;
+                const y = startY + (targetY - startY) * progress + Math.sin(angle) * radius;
+                
+                absorbed.style.left = x + 'px';
+                absorbed.style.top = y + 'px';
+                absorbed.style.transform = `scale(${1 - progress}) rotate(${angle * 50}deg)`;
+                absorbed.style.opacity = 1 - progress;
+                
+                requestAnimationFrame(spiral);
+            }
+            
+            spiral();
+        }
+
+        // Update stats display
+        function updateStats() {
+            document.getElementById('totalAbsorbed').textContent = state.totalAbsorbed;
+            document.getElementById('todayAbsorbed').textContent = state.todayAbsorbed;
+            document.getElementById('radiationCount').textContent = state.radiationCount;
+        }
+
+        // Check achievements
+        function checkAchievements() {
+            const total = state.totalAbsorbed;
+            
+            if (total >= 1 && !state.achievements.first) {
+                state.achievements.first = true;
+                showAchievement('🌟', 'First Contact', 'Fed your first thought to the void');
+            } else if (total >= 10 && !state.achievements.ten) {
+                state.achievements.ten = true;
+                showAchievement('⭐', 'Void Initiate', 'Fed 10 items to infinity');
+            } else if (total >= 50 && !state.achievements.fifty) {
+                state.achievements.fifty = true;
+                showAchievement('🌟', 'Cosmic Cleanser', 'Fed 50 items to the black hole');
+            } else if (total >= 100 && !state.achievements.hundred) {
+                state.achievements.hundred = true;
+                showAchievement('🏆', 'Master of the Void', 'Fed 100 items to infinity!');
+            }
+        }
+
+        // Show achievement notification
+        function showAchievement(icon, title, description) {
+            const achievement = document.createElement('div');
+            achievement.className = 'achievement';
+            achievement.innerHTML = `
+                <span class="achievement-icon">${icon}</span>
+                <div class="achievement-text">
+                    <div class="achievement-title">${title}</div>
+                    <div>${description}</div>
+                </div>
+            `;
+            document.body.appendChild(achievement);
+            
+            setTimeout(() => achievement.remove(), 4000);
+        }
+
+        // Hawking radiation - retrieve random past item
+        function hawkingRadiation() {
+            const section = document.getElementById('hawkingSection');
+            const content = document.getElementById('radiationContent');
+            
+            section.style.display = 'block';
+            
+            if (state.absorbedItems.length === 0) {
+                content.innerHTML = '<em style="color: rgba(255,255,255,0.4);">The void is empty... feed it first!</em>';
+                return;
+            }
+            
+            const randomItem = state.absorbedItems[Math.floor(Math.random() * state.absorbedItems.length)];
+            state.radiationCount++;
+            saveState();
+            updateStats();
+            
+            content.innerHTML = `
+                <div class="radiation-item">
+                    <strong>From the void:</strong> "${randomItem.text}"
+                    <br><small style="color: rgba(255,255,255,0.4);">Originally absorbed: ${new Date(randomItem.timestamp).toLocaleDateString()}</small>
+                </div>
+            `;
+        }
+
+        // Meditation mode
+        function toggleMeditation() {
+            state.meditationMode = !state.meditationMode;
+            const guide = document.getElementById('breathingGuide');
+            const btn = document.getElementById('meditationBtn');
+            
+            if (state.meditationMode) {
+                guide.classList.add('active');
+                btn.classList.add('active');
+                startBreathingCycle();
+            } else {
+                guide.classList.remove('active');
+                btn.classList.remove('active');
+            }
+        }
+
+        let breathingInterval;
+        function startBreathingCycle() {
+            const text = document.getElementById('breathingText');
+            const phases = ['Breathe In', 'Hold', 'Breathe Out', 'Hold'];
+            let phase = 0;
+            
+            clearInterval(breathingInterval);
+            
+            breathingInterval = setInterval(() => {
+                if (!state.meditationMode) {
+                    clearInterval(breathingInterval);
+                    return;
+                }
+                text.textContent = phases[phase];
+                phase = (phase + 1) % 4;
+            }, 2000);
+        }
+
+        // Sound toggle (simulated - actual audio would need audio files)
+        let audioContext;
+        let oscillator;
+        let gainNode;
+
+        function toggleSound() {
+            state.soundOn = !state.soundOn;
+            const btn = document.getElementById('soundBtn');
+            const indicator = document.getElementById('soundIndicator');
+            
+            if (state.soundOn) {
+                btn.textContent = '🔊 Sound On';
+                btn.classList.add('active');
+                indicator.style.display = 'block';
+                startAmbientSound();
+            } else {
+                btn.textContent = '🔇 Sound Off';
+                btn.classList.remove('active');
+                indicator.style.display = 'none';
+                stopAmbientSound();
+            }
+        }
+
+        function startAmbientSound() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Create a deep drone
+                oscillator = audioContext.createOscillator();
+                gainNode = audioContext.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(55, audioContext.currentTime); // Deep A
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start();
+                
+                // Add subtle modulation
+                const lfo = audioContext.createOscillator();
+                const lfoGain = audioContext.createGain();
+                lfo.frequency.setValueAtTime(0.1, audioContext.currentTime);
+                lfoGain.gain.setValueAtTime(5, audioContext.currentTime);
+                lfo.connect(lfoGain);
+                lfoGain.connect(oscillator.frequency);
+                lfo.start();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        function stopAmbientSound() {
+            if (oscillator) {
+                oscillator.stop();
+                oscillator = null;
+            }
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('feedBtn').addEventListener('click', () => {
+            const input = document.getElementById('thoughtInput');
+            addToHorizon(input.value);
+            input.value = '';
+        });
+
+        document.getElementById('thoughtInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addToHorizon(e.target.value);
+                e.target.value = '';
+            }
+        });
+
+        document.getElementById('meditationBtn').addEventListener('click', toggleMeditation);
+        document.getElementById('soundBtn').addEventListener('click', toggleSound);
+        document.getElementById('radiationBtn').addEventListener('click', hawkingRadiation);
+
+        // Drag and drop support
+        const blackHole = document.getElementById('blackHole');
+        
+        blackHole.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            blackHole.style.transform = 'scale(1.05)';
+        });
+
+        blackHole.addEventListener('dragleave', () => {
+            blackHole.style.transform = 'scale(1)';
+        });
+
+        blackHole.addEventListener('drop', (e) => {
+            e.preventDefault();
+            blackHole.style.transform = 'scale(1)';
+            const text = e.dataTransfer.getData('text');
+            if (text) {
+                addToHorizon(text);
+            }
+        });
+
+        // Initialize
+        createStars();
+        createOrbitingStars();
+        loadState();
+
+        // Add some sample items if first visit
+        if (state.totalAbsorbed === 0 && state.horizonItems.length === 0) {
+            state.horizonItems = [
+                { id: 1, text: 'Old worries', timestamp: new Date().toISOString() },
+                { id: 2, text: 'Negative thoughts', timestamp: new Date().toISOString() },
+                { id: 3, text: 'Completed tasks', timestamp: new Date().toISOString() }
+            ];
+            saveState();
+            renderHorizonItems();
+        }
+    </script>
+</body>
+</html>
