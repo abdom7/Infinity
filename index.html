@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity Black Hole</title>
+    <title>INFINITY — Beyond the Event Horizon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,633 +12,1039 @@
             box-sizing: border-box;
         }
 
-        body {
-            min-height: 100vh;
-            background: radial-gradient(ellipse at center, #0a0a12 0%, #000000 100%);
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            overflow-x: hidden;
-            color: #fff;
+        :root {
+            --nolan-gold: #c9a227;
+            --nolan-orange: #d4740c;
+            --deep-space: #000000;
+            --cosmic-blue: #0a1628;
+            --einstein-blue: #1a3a5c;
+            --hawking-glow: #ff6b35;
+            --singularity: #000000;
+            --event-horizon: #1a0a00;
         }
 
-        /* Stars background */
-        .stars {
+        body {
+            min-height: 100vh;
+            background: var(--deep-space);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            color: #fff;
+            cursor: crosshair;
+        }
+
+        /* Cinematic letterbox bars */
+        .letterbox-top, .letterbox-bottom {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #000;
+            z-index: 1000;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+
+        /* Film grain overlay */
+        .film-grain {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 999;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Deep space background */
+        .space-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(26, 58, 92, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(139, 69, 19, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at center, #050510 0%, #000000 100%);
+        }
+
+        /* Distant stars - parallax layers */
+        .star-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
 
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
-            animation: twinkle 3s infinite ease-in-out;
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+        .star-layer-1 .star { animation: drift 200s linear infinite; }
+        .star-layer-2 .star { animation: drift 150s linear infinite; }
+        .star-layer-3 .star { animation: drift 100s linear infinite; }
+
+        @keyframes drift {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100px); }
+        }
+
+        /* Cosmic dust nebula */
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
         }
 
         /* Main container */
-        .container {
+        .main-container {
             position: relative;
-            z-index: 1;
+            z-index: 10;
+            min-height: 100vh;
+            padding: 80px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            min-height: 100vh;
         }
 
-        /* Header */
-        .header {
+        /* Title - Nolan style */
+        .title-section {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+        .title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            letter-spacing: 30px;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+            position: relative;
+            animation: titleReveal 3s ease-out forwards;
+        }
+
+        .title::after {
+            content: 'INFINITY';
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, 
+                rgba(255,255,255,0.9) 0%, 
+                rgba(201, 162, 39, 0.8) 50%,
+                rgba(212, 116, 12, 0.6) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 50px rgba(102, 126, 234, 0.5);
-            margin-bottom: 5px;
+            clip-path: inset(0 100% 0 0);
+            animation: textFill 3s ease-out 0.5s forwards;
         }
 
-        .header p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
+        @keyframes titleReveal {
+            from { letter-spacing: 50px; opacity: 0; }
+            to { letter-spacing: 30px; opacity: 1; }
         }
 
-        /* Black hole container */
-        .black-hole-container {
+        @keyframes textFill {
+            to { clip-path: inset(0 0 0 0); }
+        }
+
+        .subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 15px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Quote - Interstellar style */
+        .quote-section {
+            max-width: 600px;
+            text-align: center;
+            margin: 20px 0 40px;
+            padding: 20px;
+            border-left: 1px solid rgba(201, 162, 39, 0.3);
+            border-right: 1px solid rgba(201, 162, 39, 0.3);
+        }
+
+        .quote {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        .quote-author {
+            margin-top: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: var(--nolan-gold);
+        }
+
+        /* GARGANTUA - The Black Hole */
+        .gargantua-container {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 20px 0;
         }
 
-        /* Accretion disk */
+        /* Gravitational lensing ring - Einstein ring */
+        .einstein-ring {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            background: 
+                linear-gradient(var(--deep-space), var(--deep-space)) padding-box,
+                linear-gradient(135deg, 
+                    rgba(255, 200, 100, 0.8),
+                    rgba(255, 150, 50, 0.4),
+                    transparent,
+                    rgba(255, 150, 50, 0.4),
+                    rgba(255, 200, 100, 0.8)
+                ) border-box;
+            animation: einsteinPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes einsteinPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.02); opacity: 1; }
+        }
+
+        /* Accretion disk - horizontal ellipse */
         .accretion-disk {
+            position: absolute;
+            width: 450px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 100, 0, 0.1) 10%,
+                rgba(255, 150, 50, 0.4) 20%,
+                rgba(255, 200, 100, 0.8) 35%,
+                rgba(255, 255, 200, 1) 50%,
+                rgba(255, 200, 100, 0.8) 65%,
+                rgba(255, 150, 50, 0.4) 80%,
+                rgba(255, 100, 0, 0.1) 90%,
+                transparent 100%
+            );
+            filter: blur(2px);
+            animation: diskRotate 20s linear infinite;
+        }
+
+        .accretion-disk::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 40px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 200, 100, 0.3),
+                rgba(255, 220, 150, 0.5),
+                rgba(255, 200, 100, 0.3),
+                transparent
+            );
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+
+        /* Back portion of disk (behind black hole) */
+        .accretion-disk-back {
+            position: absolute;
+            width: 450px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 100, 0, 0.05) 20%,
+                rgba(255, 150, 50, 0.15) 40%,
+                rgba(255, 150, 50, 0.15) 60%,
+                rgba(255, 100, 0, 0.05) 80%,
+                transparent 100%
+            );
+            transform: translateY(-80px) rotateX(75deg);
+            filter: blur(3px);
+            animation: diskRotate 20s linear infinite reverse;
+            z-index: 1;
+        }
+
+        @keyframes diskRotate {
+            from { transform: rotateZ(0deg); }
+            to { transform: rotateZ(360deg); }
+        }
+
+        /* The singularity - absolute black */
+        .singularity {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle,
+                #000000 0%,
+                #000000 60%,
+                rgba(0, 0, 0, 0.95) 70%,
+                rgba(0, 0, 0, 0.8) 85%,
+                transparent 100%
+            );
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 
+                0 0 80px 40px rgba(0, 0, 0, 0.9),
+                inset 0 0 50px rgba(0, 0, 0, 1);
+        }
+
+        /* Photon sphere glow */
+        .photon-sphere {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 200, 100, 0.4);
+            box-shadow: 
+                0 0 30px rgba(255, 150, 50, 0.3),
+                inset 0 0 30px rgba(255, 150, 50, 0.1);
+            z-index: 9;
+            animation: photonPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes photonPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        /* Gravitational lensing effect - warped stars behind */
+        .lensed-light {
             position: absolute;
             width: 350px;
             height: 350px;
             border-radius: 50%;
             background: conic-gradient(
                 from 0deg,
-                #ff6b35,
-                #f7931e,
-                #ffcc00,
-                #ff6b35,
-                #c41e3a,
-                #8b0000,
-                #ff6b35
+                transparent 0deg,
+                rgba(255, 200, 150, 0.1) 10deg,
+                transparent 20deg,
+                rgba(255, 200, 150, 0.05) 40deg,
+                transparent 60deg,
+                rgba(255, 200, 150, 0.1) 80deg,
+                transparent 100deg,
+                rgba(255, 200, 150, 0.05) 120deg,
+                transparent 140deg,
+                rgba(255, 200, 150, 0.1) 160deg,
+                transparent 180deg,
+                rgba(255, 200, 150, 0.05) 200deg,
+                transparent 220deg,
+                rgba(255, 200, 150, 0.1) 240deg,
+                transparent 260deg,
+                rgba(255, 200, 150, 0.05) 280deg,
+                transparent 300deg,
+                rgba(255, 200, 150, 0.1) 320deg,
+                transparent 340deg,
+                rgba(255, 200, 150, 0.05) 360deg
             );
-            animation: rotate 8s linear infinite;
-            filter: blur(3px);
-            opacity: 0.8;
+            animation: lensRotate 60s linear infinite;
+            z-index: 0;
         }
 
-        .accretion-disk::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            height: 70%;
-            background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.9) 100%);
-            border-radius: 50%;
-        }
-
-        /* Gravitational lensing effect */
-        .lensing {
-            position: absolute;
-            width: 320px;
-            height: 320px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 200, 100, 0.3);
-            animation: pulse-lens 4s ease-in-out infinite;
-        }
-
-        .lensing:nth-child(2) {
-            width: 280px;
-            height: 280px;
-            animation-delay: 0.5s;
-            border-color: rgba(255, 150, 50, 0.2);
-        }
-
-        .lensing:nth-child(3) {
-            width: 240px;
-            height: 240px;
-            animation-delay: 1s;
-            border-color: rgba(255, 100, 50, 0.15);
-        }
-
-        @keyframes pulse-lens {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-
-        /* Event horizon (the black center) */
-        .event-horizon {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #000000 0%, #000000 70%, transparent 100%);
-            border-radius: 50%;
-            box-shadow: 
-                0 0 60px 30px rgba(0, 0, 0, 0.9),
-                0 0 100px 60px rgba(0, 0, 0, 0.7),
-                inset 0 0 60px rgba(102, 126, 234, 0.1);
-            z-index: 10;
-        }
-
-        /* Photon sphere glow */
-        .photon-sphere {
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 
-                0 0 20px rgba(102, 126, 234, 0.5),
-                inset 0 0 20px rgba(102, 126, 234, 0.3);
-            animation: photon-glow 2s ease-in-out infinite;
-            z-index: 9;
-        }
-
-        @keyframes photon-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5), inset 0 0 20px rgba(102, 126, 234, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(102, 126, 234, 0.8), inset 0 0 30px rgba(102, 126, 234, 0.5); }
-        }
-
-        @keyframes rotate {
+        @keyframes lensRotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
-        /* Orbiting stars */
-        .orbiting-star {
+        /* Drop zone indicator */
+        .drop-zone-text {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 10px white, 0 0 20px rgba(255, 200, 100, 0.5);
-        }
-
-        /* Drop zone text */
-        .drop-hint {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.7rem;
-            text-align: center;
-            pointer-events: none;
-            z-index: 11;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            z-index: 20;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.5s;
         }
 
-        .black-hole-container:hover .drop-hint {
+        .gargantua-container:hover .drop-zone-text {
             opacity: 1;
         }
 
-        /* Thought input section */
+        /* Data panels - Oppenheimer scientific aesthetic */
+        .data-section {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .data-panel {
+            background: linear-gradient(135deg, 
+                rgba(10, 22, 40, 0.8),
+                rgba(5, 10, 20, 0.9)
+            );
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 2px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .data-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--nolan-gold), 
+                transparent
+            );
+        }
+
+        .data-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                var(--nolan-gold), 
+                transparent
+            );
+        }
+
+        .panel-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(201, 162, 39, 0.7);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .panel-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: white;
+            line-height: 1;
+        }
+
+        .panel-unit {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 5px;
+        }
+
+        /* Input section - scientific instrument style */
         .input-section {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px 0;
+        }
+
+        .input-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: rgba(201, 162, 39, 0.6);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .input-container {
             display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 15px;
+            align-items: stretch;
         }
 
         .thought-input {
-            padding: 12px 20px;
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.05);
+            flex: 1;
+            padding: 18px 25px;
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 2px;
             color: white;
+            font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
-            width: 300px;
+            letter-spacing: 1px;
             outline: none;
             transition: all 0.3s;
         }
 
         .thought-input:focus {
-            border-color: rgba(102, 126, 234, 0.8);
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            border-color: var(--nolan-gold);
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.2);
         }
 
         .thought-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.3);
+            font-style: italic;
         }
 
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            font-size: 0.9rem;
+        .btn-transmit {
+            padding: 18px 35px;
+            background: transparent;
+            border: 1px solid var(--nolan-gold);
+            color: var(--nolan-gold);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s;
-            font-weight: 600;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-feed {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .btn-feed:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
-        }
-
-        /* Event horizon list (items about to be consumed) */
-        .event-horizon-list {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 100, 50, 0.2);
-            border-radius: 15px;
-            padding: 15px;
+        .btn-transmit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
-            max-width: 500px;
-            margin: 10px 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.3), transparent);
+            transition: left 0.5s;
         }
 
-        .event-horizon-list h3 {
-            color: #ff6b35;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+        .btn-transmit:hover::before {
+            left: 100%;
+        }
+
+        .btn-transmit:hover {
+            background: rgba(201, 162, 39, 0.1);
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.3);
+        }
+
+        /* Event Horizon Queue */
+        .horizon-queue {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px 0;
+        }
+
+        .queue-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .horizon-items {
+        .queue-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: rgba(255, 107, 53, 0.8);
+            text-transform: uppercase;
+        }
+
+        .queue-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.5), transparent);
+        }
+
+        .queue-items {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            min-height: 40px;
+            gap: 12px;
         }
 
-        .horizon-item {
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(196, 30, 58, 0.2));
+        .queue-item {
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 53, 0.1),
+                rgba(139, 0, 0, 0.1)
+            );
             border: 1px solid rgba(255, 107, 53, 0.3);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 12px 20px;
+            border-radius: 2px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s;
-            animation: approach 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
         }
 
-        .horizon-item:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+        .queue-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--hawking-glow);
+            animation: itemPulse 2s ease-in-out infinite;
         }
 
-        @keyframes approach {
-            0%, 100% { opacity: 0.7; }
+        @keyframes itemPulse {
+            0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
         }
 
-        /* Controls section */
-        .controls {
+        .queue-item:hover {
+            transform: translateX(5px);
+            border-color: var(--hawking-glow);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Controls */
+        .controls-section {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
             justify-content: center;
-            margin: 20px 0;
+            margin: 30px 0;
         }
 
         .btn-control {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.85rem;
         }
 
         .btn-control:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(102, 126, 234, 0.5);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
         }
 
         .btn-control.active {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
-            border-color: rgba(102, 126, 234, 0.5);
+            border-color: var(--nolan-gold);
+            color: var(--nolan-gold);
+            box-shadow: 0 0 20px rgba(201, 162, 39, 0.2);
         }
 
-        /* Breathing guide */
-        .breathing-guide {
-            position: absolute;
+        /* Meditation overlay */
+        .meditation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: none;
+            z-index: 500;
             opacity: 0;
-            transition: opacity 0.5s;
+            visibility: hidden;
+            transition: all 0.5s;
         }
 
-        .breathing-guide.active {
+        .meditation-overlay.active {
             opacity: 1;
+            visibility: visible;
         }
 
-        .breathing-circle {
-            width: 200px;
-            height: 200px;
-            border: 2px solid rgba(102, 126, 234, 0.5);
+        .meditation-content {
+            text-align: center;
+        }
+
+        .meditation-circle {
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(201, 162, 39, 0.5);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: breathe 8s ease-in-out infinite;
+            margin: 0 auto 30px;
+            animation: meditationBreath 8s ease-in-out infinite;
         }
 
-        .breathing-text {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
+        @keyframes meditationBreath {
+            0%, 100% { transform: scale(0.8); border-color: rgba(201, 162, 39, 0.3); }
+            25%, 75% { transform: scale(1); border-color: rgba(201, 162, 39, 0.8); }
+            50% { transform: scale(1); border-color: rgba(201, 162, 39, 0.8); }
         }
 
-        @keyframes breathe {
-            0%, 100% { transform: scale(0.8); }
-            25% { transform: scale(1); }
-            50% { transform: scale(1); }
-            75% { transform: scale(0.8); }
-        }
-
-        /* Stats panel */
-        .stats-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 500px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .stat-value {
+        .meditation-text {
+            font-family: 'Bebas Neue', sans-serif;
             font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea, #f093fb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: 10px;
+            color: var(--nolan-gold);
         }
 
-        .stat-label {
-            font-size: 0.75rem;
+        .meditation-quote {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 300;
+            font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.5);
-            margin-top: 5px;
+            max-width: 400px;
+            margin: 0 auto;
+            font-style: italic;
         }
 
-        /* Hawking radiation (resurfaced items) */
-        .hawking-radiation {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            padding: 15px;
+        .btn-close-meditation {
+            margin-top: 40px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-close-meditation:hover {
+            border-color: white;
+            color: white;
+        }
+
+        /* Hawking Radiation panel */
+        .radiation-panel {
             width: 100%;
-            max-width: 500px;
-            margin: 10px 0;
-        }
-
-        .hawking-radiation h3 {
-            color: #667eea;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .radiation-item {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            max-width: 600px;
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.05),
+                rgba(10, 22, 40, 0.8)
+            );
             border: 1px solid rgba(102, 126, 234, 0.2);
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            animation: radiate 0.5s ease-out;
+            border-radius: 2px;
+            padding: 25px;
+            margin: 20px 0;
+            display: none;
         }
 
-        @keyframes radiate {
-            from { opacity: 0; transform: translateY(-20px); }
+        .radiation-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Absorbed item animation */
-        .absorbed-item {
-            position: fixed;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            pointer-events: none;
-            z-index: 100;
-            white-space: nowrap;
+        .radiation-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: rgba(102, 126, 234, 0.8);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .radiation-content {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 2px solid rgba(102, 126, 234, 0.5);
         }
 
         /* Achievement notification */
-        .achievement {
+        .achievement-toast {
             position: fixed;
-            top: 20px;
+            top: 80px;
             right: 20px;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 53, 0.2));
-            border: 1px solid rgba(255, 215, 0, 0.5);
-            border-radius: 15px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 3s forwards;
-            z-index: 1000;
+            background: linear-gradient(135deg, 
+                rgba(201, 162, 39, 0.2),
+                rgba(10, 22, 40, 0.95)
+            );
+            border: 1px solid var(--nolan-gold);
+            padding: 20px 30px;
+            z-index: 1001;
+            animation: achieveIn 0.5s ease-out, achieveOut 0.5s ease-in 4s forwards;
         }
 
-        @keyframes slideIn {
+        @keyframes achieveIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateY(-20px); }
+        @keyframes achieveOut {
+            to { transform: translateY(-20px); opacity: 0; }
         }
 
-        .achievement-icon {
-            font-size: 1.5rem;
-        }
-
-        .achievement-text {
-            font-size: 0.9rem;
+        .achievement-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: var(--nolan-gold);
+            text-transform: uppercase;
         }
 
         .achievement-title {
-            color: #ffd700;
-            font-weight: bold;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: white;
+            margin-top: 5px;
         }
 
-        /* Sound toggle indicator */
-        .sound-indicator {
+        /* Absorbed item animation */
+        .absorbed-matter {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px 15px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--nolan-gold), var(--nolan-orange));
+            color: black;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            pointer-events: none;
+            z-index: 100;
+            border-radius: 2px;
+        }
+
+        /* Time dilation indicator */
+        .time-dilation {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .time-value {
+            color: var(--nolan-gold);
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Coordinates display */
+        .coordinates {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            text-align: right;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Sound indicator */
+        .sound-status {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.3);
+            display: none;
+        }
+
+        .sound-status.active {
+            display: block;
+            color: var(--nolan-gold);
         }
 
         /* Responsive */
-        @media (max-width: 500px) {
-            .black-hole-container {
-                width: 300px;
-                height: 300px;
+        @media (max-width: 768px) {
+            .letterbox-top, .letterbox-bottom {
+                height: 40px;
             }
             
-            .accretion-disk {
+            .main-container {
+                padding: 60px 15px;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+                letter-spacing: 15px;
+            }
+            
+            .title::after {
+                content: 'INFINITY';
+            }
+            
+            .gargantua-container {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .einstein-ring {
                 width: 260px;
                 height: 260px;
             }
             
-            .lensing {
-                width: 240px;
-                height: 240px;
+            .accretion-disk {
+                width: 300px;
+                height: 80px;
             }
             
-            .lensing:nth-child(2) {
-                width: 210px;
-                height: 210px;
-            }
-            
-            .lensing:nth-child(3) {
-                width: 180px;
-                height: 180px;
-            }
-            
-            .event-horizon {
-                width: 90px;
-                height: 90px;
+            .singularity {
+                width: 100px;
+                height: 100px;
             }
             
             .photon-sphere {
-                width: 105px;
-                height: 105px;
+                width: 115px;
+                height: 115px;
             }
             
-            .thought-input {
+            .data-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            .btn-transmit {
                 width: 100%;
             }
             
-            .header h1 {
-                font-size: 1.8rem;
+            .quote-section {
+                padding: 15px;
+            }
+            
+            .quote {
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
+    <div class="letterbox-top"></div>
+    <div class="letterbox-bottom"></div>
+    <div class="film-grain"></div>
     
-    <div class="container">
-        <header class="header">
-            <h1>🕳️ Infinity Black Hole</h1>
-            <p>Feed your thoughts to the void</p>
-        </header>
+    <div class="space-container"></div>
+    
+    <div class="star-field star-layer-1" id="starLayer1"></div>
+    <div class="star-field star-layer-2" id="starLayer2"></div>
+    <div class="star-field star-layer-3" id="starLayer3"></div>
+    
+    <div class="main-container">
+        <section class="title-section">
+            <h1 class="title">INFINITY</h1>
+            <p class="subtitle">Beyond the Event Horizon</p>
+        </section>
 
-        <div class="black-hole-container" id="blackHole">
+        <section class="quote-section">
+            <p class="quote" id="displayQuote">"Do not go gentle into that good night. Rage, rage against the dying of the light."</p>
+            <p class="quote-author">— Dylan Thomas / Interstellar</p>
+        </section>
+
+        <div class="gargantua-container" id="gargantua">
+            <div class="lensed-light"></div>
+            <div class="einstein-ring"></div>
+            <div class="accretion-disk-back"></div>
             <div class="accretion-disk"></div>
-            <div class="lensing"></div>
-            <div class="lensing"></div>
-            <div class="lensing"></div>
             <div class="photon-sphere"></div>
-            <div class="event-horizon"></div>
-            <div class="drop-hint">Drop thoughts<br>into the void</div>
-            
-            <div class="breathing-guide" id="breathingGuide">
-                <div class="breathing-circle">
-                    <span class="breathing-text" id="breathingText">Breathe In</span>
-                </div>
-            </div>
+            <div class="singularity"></div>
+            <span class="drop-zone-text">TRANSMIT TO SINGULARITY</span>
         </div>
 
-        <div class="input-section">
-            <input type="text" class="thought-input" id="thoughtInput" placeholder="Enter a thought, task, or worry...">
-            <button class="btn btn-feed" id="feedBtn">Feed to Void 🕳️</button>
-        </div>
-
-        <div class="controls">
-            <button class="btn-control" id="meditationBtn">🧘 Meditation Mode</button>
-            <button class="btn-control" id="soundBtn">🔇 Sound Off</button>
-            <button class="btn-control" id="radiationBtn">🔮 Hawking Radiation</button>
-        </div>
-
-        <div class="event-horizon-list">
-            <h3>⚠️ Event Horizon (click to consume)</h3>
-            <div class="horizon-items" id="horizonItems">
-                <!-- Items appear here before being consumed -->
+        <section class="data-section">
+            <div class="data-panel">
+                <div class="panel-label">Mass Absorbed</div>
+                <div class="panel-value" id="totalAbsorbed">0</div>
+                <div class="panel-unit">Solar Masses Equivalent</div>
             </div>
-        </div>
+            <div class="data-panel">
+                <div class="panel-label">Today's Intake</div>
+                <div class="panel-value" id="todayAbsorbed">0</div>
+                <div class="panel-unit">Transmissions</div>
+            </div>
+            <div class="data-panel">
+                <div class="panel-label">Hawking Emissions</div>
+                <div class="panel-value" id="radiationCount">0</div>
+                <div class="panel-unit">Quantum Returns</div>
+            </div>
+        </section>
 
-        <div class="stats-panel">
-            <div class="stat-card">
-                <div class="stat-value" id="totalAbsorbed">0</div>
-                <div class="stat-label">Absorbed into Infinity</div>
+        <section class="input-section">
+            <label class="input-label">Transmission Input</label>
+            <div class="input-container">
+                <input type="text" class="thought-input" id="thoughtInput" 
+                       placeholder="Enter thought, memory, or burden to transmit...">
+                <button class="btn-transmit" id="transmitBtn">Transmit</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="todayAbsorbed">0</div>
-                <div class="stat-label">Today's Void Feed</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="radiationCount">0</div>
-                <div class="stat-label">Hawking Emissions</div>
-            </div>
-        </div>
+        </section>
 
-        <div class="hawking-radiation" id="hawkingSection" style="display: none;">
-            <h3>🔮 Hawking Radiation (resurfaced from the void)</h3>
-            <div id="radiationContent">
-                <em style="color: rgba(255,255,255,0.4);">Click "Hawking Radiation" to retrieve something from the void...</em>
+        <section class="horizon-queue">
+            <div class="queue-header">
+                <span class="queue-title">⚠ Event Horizon Queue</span>
+                <div class="queue-line"></div>
+            </div>
+            <div class="queue-items" id="queueItems">
+                <!-- Items appear here -->
+            </div>
+        </section>
+
+        <section class="controls-section">
+            <button class="btn-control" id="meditationBtn">◯ Meditation Protocol</button>
+            <button class="btn-control" id="soundBtn">◁ Ambient Transmission</button>
+            <button class="btn-control" id="radiationBtn">◈ Hawking Radiation</button>
+        </section>
+
+        <div class="radiation-panel" id="radiationPanel">
+            <div class="radiation-header">◈ Quantum Return from Singularity</div>
+            <div class="radiation-content" id="radiationContent">
+                Initiating Hawking radiation retrieval...
             </div>
         </div>
     </div>
 
-    <div class="sound-indicator" id="soundIndicator" style="display: none;">
-        🔊 Ambient sound playing
+    <!-- Meditation Overlay -->
+    <div class="meditation-overlay" id="meditationOverlay">
+        <div class="meditation-content">
+            <div class="meditation-circle">
+                <span class="meditation-text" id="meditationText">BREATHE</span>
+            </div>
+            <p class="meditation-quote">"Love is the one thing we're capable of perceiving that transcends dimensions of time and space."</p>
+            <button class="btn-close-meditation" id="closeMeditation">Exit Protocol</button>
+        </div>
+    </div>
+
+    <!-- Fixed UI elements -->
+    <div class="time-dilation">
+        TIME DILATION: <span class="time-value" id="timeDilation">1.00x</span>
+    </div>
+
+    <div class="coordinates">
+        COORDINATES<br>
+        <span id="coordsDisplay">RA 17h 45m 40.04s | DEC −29° 0′ 28.1″</span>
+    </div>
+
+    <div class="sound-status" id="soundStatus">
+        ◉ AMBIENT TRANSMISSION ACTIVE
     </div>
 
     <script>
-        // State
+        // ========== STATE MANAGEMENT ==========
         let state = {
             totalAbsorbed: 0,
             todayAbsorbed: 0,
             radiationCount: 0,
             absorbedItems: [],
-            horizonItems: [],
-            meditationMode: false,
-            soundOn: false,
+            queueItems: [],
             achievements: {
                 first: false,
                 ten: false,
@@ -646,412 +1053,429 @@
             }
         };
 
-        // Load state from localStorage
+        // Quotes array - Nolan films inspired
+        const quotes = [
+            { text: "Do not go gentle into that good night. Rage, rage against the dying of the light.", author: "Dylan Thomas / Interstellar" },
+            { text: "Love is the one thing we're capable of perceiving that transcends dimensions of time and space.", author: "Interstellar" },
+            { text: "We've always defined ourselves by the ability to overcome the impossible.", author: "Interstellar" },
+            { text: "Now I am become Death, the destroyer of worlds.", author: "J. Robert Oppenheimer" },
+            { text: "Theory will take you only so far.", author: "Oppenheimer" },
+            { text: "What is the most resilient parasite? An idea.", author: "Inception" },
+            { text: "Dreams feel real while we're in them. It's only when we wake up that we realize something was actually strange.", author: "Inception" },
+            { text: "You mustn't be afraid to dream a little bigger, darling.", author: "Inception" },
+            { text: "The only way to know where the bottom is, is to keep going until you find it.", author: "Made in Abyss" },
+            { text: "The unknown compels us forward.", author: "Made in Abyss" }
+        ];
+
+        // ========== INITIALIZATION ==========
+        function init() {
+            loadState();
+            createStarFields();
+            createNebulae();
+            updateUI();
+            renderQueue();
+            setRandomQuote();
+            startTimeDilation();
+            
+            // Add initial items if first visit
+            if (state.totalAbsorbed === 0 && state.queueItems.length === 0) {
+                state.queueItems = [
+                    { id: 1, text: "Yesterday's regrets", timestamp: Date.now() },
+                    { id: 2, text: "Unfinished thoughts", timestamp: Date.now() },
+                    { id: 3, text: "Old worries", timestamp: Date.now() }
+                ];
+                saveState();
+                renderQueue();
+            }
+        }
+
+        // ========== LOCAL STORAGE ==========
         function loadState() {
-            const saved = localStorage.getItem('infinityBlackHole');
+            const saved = localStorage.getItem('infinityGargantua');
             if (saved) {
-                const parsed = JSON.parse(saved);
-                state = { ...state, ...parsed };
+                state = { ...state, ...JSON.parse(saved) };
                 
-                // Reset today count if new day
-                const lastDate = localStorage.getItem('infinityBlackHoleDate');
+                // Reset daily count
+                const lastDate = localStorage.getItem('infinityGargantuaDate');
                 const today = new Date().toDateString();
                 if (lastDate !== today) {
                     state.todayAbsorbed = 0;
-                    localStorage.setItem('infinityBlackHoleDate', today);
+                    localStorage.setItem('infinityGargantuaDate', today);
                 }
-                
-                updateStats();
-                renderHorizonItems();
             }
         }
 
-        // Save state
         function saveState() {
-            localStorage.setItem('infinityBlackHole', JSON.stringify(state));
-            localStorage.setItem('infinityBlackHoleDate', new Date().toDateString());
+            localStorage.setItem('infinityGargantua', JSON.stringify(state));
+            localStorage.setItem('infinityGargantuaDate', new Date().toDateString());
         }
 
-        // Create background stars
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 200; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 'px';
-                star.style.height = star.style.width;
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
-            }
-        }
+        // ========== STAR FIELD GENERATION ==========
+        function createStarFields() {
+            const layers = [
+                { id: 'starLayer1', count: 100, sizeRange: [1, 2] },
+                { id: 'starLayer2', count: 150, sizeRange: [1, 1.5] },
+                { id: 'starLayer3', count: 200, sizeRange: [0.5, 1] }
+            ];
 
-        // Create orbiting stars
-        function createOrbitingStars() {
-            const container = document.getElementById('blackHole');
-            
-            for (let i = 0; i < 8; i++) {
-                const star = document.createElement('div');
-                star.className = 'orbiting-star';
-                
-                const angle = (i / 8) * Math.PI * 2;
-                const radius = 160 + Math.random() * 40;
-                const speed = 5 + Math.random() * 5;
-                
-                animateOrbitingStar(star, angle, radius, speed);
-                container.appendChild(star);
-            }
-        }
-
-        function animateOrbitingStar(star, startAngle, startRadius, speed) {
-            let angle = startAngle;
-            let radius = startRadius;
-            
-            function animate() {
-                angle += 0.02;
-                radius -= 0.05;
-                
-                if (radius < 60) {
-                    radius = 160 + Math.random() * 40;
-                    angle = Math.random() * Math.PI * 2;
+            layers.forEach(layer => {
+                const container = document.getElementById(layer.id);
+                for (let i = 0; i < layer.count; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    const size = layer.sizeRange[0] + Math.random() * (layer.sizeRange[1] - layer.sizeRange[0]);
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.opacity = 0.3 + Math.random() * 0.7;
+                    star.style.animationDelay = Math.random() * 200 + 's';
+                    container.appendChild(star);
                 }
-                
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius * 0.4; // Elliptical orbit
-                
-                star.style.left = `calc(50% + ${x}px)`;
-                star.style.top = `calc(50% + ${y}px)`;
-                star.style.opacity = Math.max(0.3, radius / 200);
-                star.style.transform = `scale(${radius / 200})`;
-                
-                requestAnimationFrame(animate);
-            }
-            
-            animate();
-        }
-
-        // Add item to event horizon
-        function addToHorizon(text) {
-            if (!text.trim()) return;
-            
-            state.horizonItems.push({
-                id: Date.now(),
-                text: text.trim(),
-                timestamp: new Date().toISOString()
-            });
-            
-            saveState();
-            renderHorizonItems();
-        }
-
-        // Render horizon items
-        function renderHorizonItems() {
-            const container = document.getElementById('horizonItems');
-            container.innerHTML = '';
-            
-            state.horizonItems.forEach(item => {
-                const el = document.createElement('div');
-                el.className = 'horizon-item';
-                el.textContent = item.text;
-                el.onclick = () => consumeItem(item.id);
-                container.appendChild(el);
             });
         }
 
-        // Consume item (absorb into black hole)
-        function consumeItem(id) {
-            const item = state.horizonItems.find(i => i.id === id);
-            if (!item) return;
-            
-            // Get the element position
-            const elements = document.querySelectorAll('.horizon-item');
-            let sourceEl = null;
-            elements.forEach(el => {
-                if (el.textContent === item.text) sourceEl = el;
-            });
-            
-            if (sourceEl) {
-                animateAbsorption(sourceEl, item.text);
+        // ========== NEBULAE ==========
+        function createNebulae() {
+            const container = document.querySelector('.space-container');
+            const colors = [
+                'rgba(201, 162, 39, 0.1)',
+                'rgba(212, 116, 12, 0.08)',
+                'rgba(26, 58, 92, 0.15)',
+                'rgba(139, 69, 19, 0.1)'
+            ];
+
+            for (let i = 0; i < 4; i++) {
+                const nebula = document.createElement('div');
+                nebula.className = 'nebula';
+                nebula.style.width = (200 + Math.random() * 400) + 'px';
+                nebula.style.height = (200 + Math.random() * 400) + 'px';
+                nebula.style.left = Math.random() * 100 + '%';
+                nebula.style.top = Math.random() * 100 + '%';
+                nebula.style.background = colors[i % colors.length];
+                container.appendChild(nebula);
             }
-            
-            // Move to absorbed
-            state.absorbedItems.push(item);
-            state.horizonItems = state.horizonItems.filter(i => i.id !== id);
-            state.totalAbsorbed++;
-            state.todayAbsorbed++;
-            
-            checkAchievements();
-            saveState();
-            updateStats();
-            renderHorizonItems();
         }
 
-        // Animate absorption
-        function animateAbsorption(sourceEl, text) {
-            const rect = sourceEl.getBoundingClientRect();
-            const blackHole = document.getElementById('blackHole');
-            const bhRect = blackHole.getBoundingClientRect();
-            const targetX = bhRect.left + bhRect.width / 2;
-            const targetY = bhRect.top + bhRect.height / 2;
-            
-            const absorbed = document.createElement('div');
-            absorbed.className = 'absorbed-item';
-            absorbed.textContent = text;
-            absorbed.style.left = rect.left + 'px';
-            absorbed.style.top = rect.top + 'px';
-            document.body.appendChild(absorbed);
-            
-            // Spiral animation
-            let angle = 0;
-            let progress = 0;
-            const startX = rect.left;
-            const startY = rect.top;
-            
-            function spiral() {
-                progress += 0.02;
-                angle += 0.3;
-                
-                if (progress >= 1) {
-                    absorbed.remove();
-                    return;
-                }
-                
-                const radius = (1 - progress) * 100;
-                const x = startX + (targetX - startX) * progress + Math.cos(angle) * radius;
-                const y = startY + (targetY - startY) * progress + Math.sin(angle) * radius;
-                
-                absorbed.style.left = x + 'px';
-                absorbed.style.top = y + 'px';
-                absorbed.style.transform = `scale(${1 - progress}) rotate(${angle * 50}deg)`;
-                absorbed.style.opacity = 1 - progress;
-                
-                requestAnimationFrame(spiral);
-            }
-            
-            spiral();
+        // ========== QUOTE ROTATION ==========
+        function setRandomQuote() {
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('displayQuote').textContent = `"${quote.text}"`;
+            document.querySelector('.quote-author').textContent = `— ${quote.author}`;
         }
 
-        // Update stats display
-        function updateStats() {
+        // ========== TIME DILATION EFFECT ==========
+        function startTimeDilation() {
+            const display = document.getElementById('timeDilation');
+            let dilation = 1.0;
+            let direction = 0.001;
+
+            setInterval(() => {
+                dilation += direction;
+                if (dilation > 1.5 || dilation < 0.7) direction *= -1;
+                display.textContent = dilation.toFixed(2) + 'x';
+            }, 100);
+        }
+
+        // ========== UI UPDATES ==========
+        function updateUI() {
             document.getElementById('totalAbsorbed').textContent = state.totalAbsorbed;
             document.getElementById('todayAbsorbed').textContent = state.todayAbsorbed;
             document.getElementById('radiationCount').textContent = state.radiationCount;
         }
 
-        // Check achievements
+        function renderQueue() {
+            const container = document.getElementById('queueItems');
+            container.innerHTML = '';
+
+            state.queueItems.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'queue-item';
+                el.textContent = item.text;
+                el.addEventListener('click', () => absorbItem(item.id));
+                container.appendChild(el);
+            });
+        }
+
+        // ========== CORE FUNCTIONALITY ==========
+        function addToQueue(text) {
+            if (!text.trim()) return;
+
+            state.queueItems.push({
+                id: Date.now(),
+                text: text.trim(),
+                timestamp: Date.now()
+            });
+
+            saveState();
+            renderQueue();
+        }
+
+        function absorbItem(id) {
+            const item = state.queueItems.find(i => i.id === id);
+            if (!item) return;
+
+            // Find element for animation
+            const elements = document.querySelectorAll('.queue-item');
+            let sourceEl = null;
+            elements.forEach(el => {
+                if (el.textContent === item.text) sourceEl = el;
+            });
+
+            if (sourceEl) {
+                animateAbsorption(sourceEl, item.text);
+            }
+
+            // Update state
+            state.absorbedItems.push(item);
+            state.queueItems = state.queueItems.filter(i => i.id !== id);
+            state.totalAbsorbed++;
+            state.todayAbsorbed++;
+
+            checkAchievements();
+            saveState();
+            updateUI();
+            renderQueue();
+        }
+
+        function animateAbsorption(sourceEl, text) {
+            const rect = sourceEl.getBoundingClientRect();
+            const gargantua = document.getElementById('gargantua');
+            const targetRect = gargantua.getBoundingClientRect();
+            const targetX = targetRect.left + targetRect.width / 2;
+            const targetY = targetRect.top + targetRect.height / 2;
+
+            const matter = document.createElement('div');
+            matter.className = 'absorbed-matter';
+            matter.textContent = text;
+            matter.style.left = rect.left + 'px';
+            matter.style.top = rect.top + 'px';
+            document.body.appendChild(matter);
+
+            let progress = 0;
+            let angle = Math.random() * Math.PI * 2;
+
+            function spiral() {
+                progress += 0.015;
+                angle += 0.2;
+
+                if (progress >= 1) {
+                    matter.remove();
+                    return;
+                }
+
+                const radius = (1 - progress) * 150;
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                const x = rect.left + (targetX - rect.left) * easeProgress + Math.cos(angle) * radius;
+                const y = rect.top + (targetY - rect.top) * easeProgress + Math.sin(angle) * radius;
+
+                matter.style.left = x + 'px';
+                matter.style.top = y + 'px';
+                matter.style.transform = `scale(${1 - progress}) rotate(${angle * 100}deg)`;
+                matter.style.opacity = 1 - progress;
+
+                requestAnimationFrame(spiral);
+            }
+
+            spiral();
+        }
+
+        // ========== ACHIEVEMENTS ==========
         function checkAchievements() {
             const total = state.totalAbsorbed;
-            
+
             if (total >= 1 && !state.achievements.first) {
                 state.achievements.first = true;
-                showAchievement('🌟', 'First Contact', 'Fed your first thought to the void');
+                showAchievement('FIRST CONTACT', 'Transmission received by singularity');
             } else if (total >= 10 && !state.achievements.ten) {
                 state.achievements.ten = true;
-                showAchievement('⭐', 'Void Initiate', 'Fed 10 items to infinity');
+                showAchievement('EVENT HORIZON', '10 transmissions absorbed');
             } else if (total >= 50 && !state.achievements.fifty) {
                 state.achievements.fifty = true;
-                showAchievement('🌟', 'Cosmic Cleanser', 'Fed 50 items to the black hole');
+                showAchievement('ACCRETION MASTER', '50 masses consumed');
             } else if (total >= 100 && !state.achievements.hundred) {
                 state.achievements.hundred = true;
-                showAchievement('🏆', 'Master of the Void', 'Fed 100 items to infinity!');
+                showAchievement('SINGULARITY ACHIEVED', '100 transmissions into infinity');
             }
         }
 
-        // Show achievement notification
-        function showAchievement(icon, title, description) {
-            const achievement = document.createElement('div');
-            achievement.className = 'achievement';
-            achievement.innerHTML = `
-                <span class="achievement-icon">${icon}</span>
-                <div class="achievement-text">
-                    <div class="achievement-title">${title}</div>
-                    <div>${description}</div>
-                </div>
+        function showAchievement(title, subtitle) {
+            const toast = document.createElement('div');
+            toast.className = 'achievement-toast';
+            toast.innerHTML = `
+                <div class="achievement-label">Achievement Unlocked</div>
+                <div class="achievement-title">${title}</div>
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 5px;">${subtitle}</div>
             `;
-            document.body.appendChild(achievement);
-            
-            setTimeout(() => achievement.remove(), 4000);
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
         }
 
-        // Hawking radiation - retrieve random past item
-        function hawkingRadiation() {
-            const section = document.getElementById('hawkingSection');
+        // ========== HAWKING RADIATION ==========
+        function triggerHawkingRadiation() {
+            const panel = document.getElementById('radiationPanel');
             const content = document.getElementById('radiationContent');
             
-            section.style.display = 'block';
-            
+            panel.classList.add('active');
+
             if (state.absorbedItems.length === 0) {
-                content.innerHTML = '<em style="color: rgba(255,255,255,0.4);">The void is empty... feed it first!</em>';
+                content.innerHTML = '<em style="color: rgba(255,255,255,0.4);">The singularity contains no recoverable data. Transmit matter first.</em>';
                 return;
             }
-            
+
             const randomItem = state.absorbedItems[Math.floor(Math.random() * state.absorbedItems.length)];
             state.radiationCount++;
             saveState();
-            updateStats();
-            
+            updateUI();
+
+            const date = new Date(randomItem.timestamp).toLocaleDateString();
             content.innerHTML = `
-                <div class="radiation-item">
-                    <strong>From the void:</strong> "${randomItem.text}"
-                    <br><small style="color: rgba(255,255,255,0.4);">Originally absorbed: ${new Date(randomItem.timestamp).toLocaleDateString()}</small>
-                </div>
+                <strong style="color: var(--nolan-gold);">RECOVERED:</strong> "${randomItem.text}"
+                <br><small style="color: rgba(255,255,255,0.4);">Original transmission: ${date}</small>
             `;
         }
 
-        // Meditation mode
+        // ========== MEDITATION MODE ==========
+        let meditationInterval;
+
         function toggleMeditation() {
-            state.meditationMode = !state.meditationMode;
-            const guide = document.getElementById('breathingGuide');
+            const overlay = document.getElementById('meditationOverlay');
             const btn = document.getElementById('meditationBtn');
             
-            if (state.meditationMode) {
-                guide.classList.add('active');
+            if (overlay.classList.contains('active')) {
+                overlay.classList.remove('active');
+                btn.classList.remove('active');
+                clearInterval(meditationInterval);
+            } else {
+                overlay.classList.add('active');
                 btn.classList.add('active');
                 startBreathingCycle();
-            } else {
-                guide.classList.remove('active');
-                btn.classList.remove('active');
             }
         }
 
-        let breathingInterval;
         function startBreathingCycle() {
-            const text = document.getElementById('breathingText');
-            const phases = ['Breathe In', 'Hold', 'Breathe Out', 'Hold'];
+            const text = document.getElementById('meditationText');
+            const phases = ['BREATHE IN', 'HOLD', 'BREATHE OUT', 'HOLD'];
             let phase = 0;
-            
-            clearInterval(breathingInterval);
-            
-            breathingInterval = setInterval(() => {
-                if (!state.meditationMode) {
-                    clearInterval(breathingInterval);
-                    return;
-                }
-                text.textContent = phases[phase];
+
+            text.textContent = phases[0];
+            meditationInterval = setInterval(() => {
                 phase = (phase + 1) % 4;
+                text.textContent = phases[phase];
             }, 2000);
         }
 
-        // Sound toggle (simulated - actual audio would need audio files)
-        let audioContext;
-        let oscillator;
-        let gainNode;
+        // ========== SOUND ==========
+        let audioContext, oscillator, gainNode, lfo;
 
         function toggleSound() {
-            state.soundOn = !state.soundOn;
             const btn = document.getElementById('soundBtn');
-            const indicator = document.getElementById('soundIndicator');
-            
-            if (state.soundOn) {
-                btn.textContent = '🔊 Sound On';
-                btn.classList.add('active');
-                indicator.style.display = 'block';
-                startAmbientSound();
-            } else {
-                btn.textContent = '🔇 Sound Off';
+            const status = document.getElementById('soundStatus');
+
+            if (btn.classList.contains('active')) {
                 btn.classList.remove('active');
-                indicator.style.display = 'none';
-                stopAmbientSound();
+                status.classList.remove('active');
+                stopSound();
+            } else {
+                btn.classList.add('active');
+                status.classList.add('active');
+                startSound();
             }
         }
 
-        function startAmbientSound() {
+        function startSound() {
             try {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // Create a deep drone
+                // Deep drone
                 oscillator = audioContext.createOscillator();
                 gainNode = audioContext.createGain();
                 
                 oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(55, audioContext.currentTime); // Deep A
+                oscillator.frequency.setValueAtTime(40, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
                 
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                // LFO for modulation
+                lfo = audioContext.createOscillator();
+                const lfoGain = audioContext.createGain();
+                lfo.frequency.setValueAtTime(0.05, audioContext.currentTime);
+                lfoGain.gain.setValueAtTime(8, audioContext.currentTime);
+                
+                lfo.connect(lfoGain);
+                lfoGain.connect(oscillator.frequency);
                 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
                 oscillator.start();
-                
-                // Add subtle modulation
-                const lfo = audioContext.createOscillator();
-                const lfoGain = audioContext.createGain();
-                lfo.frequency.setValueAtTime(0.1, audioContext.currentTime);
-                lfoGain.gain.setValueAtTime(5, audioContext.currentTime);
-                lfo.connect(lfoGain);
-                lfoGain.connect(oscillator.frequency);
                 lfo.start();
+                
+                // Add second harmonic
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(80, audioContext.currentTime);
+                gain2.gain.setValueAtTime(0.05, audioContext.currentTime);
+                osc2.connect(gain2);
+                gain2.connect(audioContext.destination);
+                osc2.start();
+                
             } catch (e) {
                 console.log('Audio not supported');
             }
         }
 
-        function stopAmbientSound() {
+        function stopSound() {
             if (oscillator) {
                 oscillator.stop();
-                oscillator = null;
+                lfo.stop();
             }
             if (audioContext) {
                 audioContext.close();
-                audioContext = null;
             }
         }
 
-        // Event listeners
-        document.getElementById('feedBtn').addEventListener('click', () => {
+        // ========== EVENT LISTENERS ==========
+        document.getElementById('transmitBtn').addEventListener('click', () => {
             const input = document.getElementById('thoughtInput');
-            addToHorizon(input.value);
+            addToQueue(input.value);
             input.value = '';
         });
 
         document.getElementById('thoughtInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                addToHorizon(e.target.value);
+                addToQueue(e.target.value);
                 e.target.value = '';
             }
         });
 
         document.getElementById('meditationBtn').addEventListener('click', toggleMeditation);
+        document.getElementById('closeMeditation').addEventListener('click', toggleMeditation);
         document.getElementById('soundBtn').addEventListener('click', toggleSound);
-        document.getElementById('radiationBtn').addEventListener('click', hawkingRadiation);
+        document.getElementById('radiationBtn').addEventListener('click', triggerHawkingRadiation);
 
-        // Drag and drop support
-        const blackHole = document.getElementById('blackHole');
-        
-        blackHole.addEventListener('dragover', (e) => {
+        // Drag and drop on Gargantua
+        const gargantua = document.getElementById('gargantua');
+
+        gargantua.addEventListener('dragover', (e) => {
             e.preventDefault();
-            blackHole.style.transform = 'scale(1.05)';
+            gargantua.style.transform = 'scale(1.05)';
         });
 
-        blackHole.addEventListener('dragleave', () => {
-            blackHole.style.transform = 'scale(1)';
+        gargantua.addEventListener('dragleave', () => {
+            gargantua.style.transform = 'scale(1)';
         });
 
-        blackHole.addEventListener('drop', (e) => {
+        gargantua.addEventListener('drop', (e) => {
             e.preventDefault();
-            blackHole.style.transform = 'scale(1)';
+            gargantua.style.transform = 'scale(1)';
             const text = e.dataTransfer.getData('text');
-            if (text) {
-                addToHorizon(text);
-            }
+            if (text) addToQueue(text);
         });
 
         // Initialize
-        createStars();
-        createOrbitingStars();
-        loadState();
-
-        // Add some sample items if first visit
-        if (state.totalAbsorbed === 0 && state.horizonItems.length === 0) {
-            state.horizonItems = [
-                { id: 1, text: 'Old worries', timestamp: new Date().toISOString() },
-                { id: 2, text: 'Negative thoughts', timestamp: new Date().toISOString() },
-                { id: 3, text: 'Completed tasks', timestamp: new Date().toISOString() }
-            ];
-            saveState();
-            renderHorizonItems();
-        }
+        init();
     </script>
 </body>
 </html>
